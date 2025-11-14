@@ -109,7 +109,6 @@ namespace GeneticSharp.Extensions
             //Add cost to return to starting city
             distanceSum += CalcDistanceTwoCities(points[citiesIndexes.Last()], points[citiesIndexes.First()]);
 
-            var fitness = 1.0 - (distanceSum / (points.Count * 1000.0));
             //Fitness function is kind of arbitrary
             //By having the incorrect factor be divided by smaller ratio it increases the resolution
             //of the fitness and is less likely to stagnate due to floating point
