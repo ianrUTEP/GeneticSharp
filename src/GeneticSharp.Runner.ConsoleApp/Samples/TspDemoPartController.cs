@@ -91,8 +91,22 @@ namespace GeneticSharp.Runner.ConsoleApp.Samples
             Console.WriteLine("Cities: {0:n0}", c.Length);
             Console.WriteLine("Distance: {0:n2}", c.Distance);
 
-            var cities = bestChromosome.GetGenes().Select(g => g.Value.ToString()).ToArray();
-            Console.WriteLine("City tour: {0}");///, string.Join(", ", cities));
+            // var cities = bestChromosome.GetGenes().Select(g => g.Value.ToString()).ToArray();
+            // Console.WriteLine("City tour: {0}");///, string.Join(", ", cities));
+        }
+
+        /// <summary>
+        /// Exports the sample at the end.
+        /// </summary>
+        /// <param name="bestChromosome">The current best chromosome</param>
+        public override void Export(IChromosome bestChromosome)
+        {
+            using (var writer = new StreamWriter(m_destFolder + "/solution.csv"))
+            using (var csv = new CsvHelper.CsvWriter(writer, System.Globalization.CultureInfo.InvariantCulture))
+            {
+                var solution = bestChromosome.GetGenes().Select(g => g.Value).ToList(); //.ToArray() was default, trying .ToList() and also not convert to string;
+                csv.WriteRecords(solution);
+            }
         }
         #endregion
     }
