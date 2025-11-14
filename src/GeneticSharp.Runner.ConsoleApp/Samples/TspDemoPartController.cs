@@ -1,7 +1,9 @@
-using GeneticSharp.Extensions;
+using GeneticSharp.Extensions;  //Install with Install-Package GeneticSharp.Extensions
 using System;
 using System.ComponentModel;
 using System.Linq;
+using System.IO;
+//Install with Install-Package CSVHelper
 
 namespace GeneticSharp.Runner.ConsoleApp.Samples
 {
