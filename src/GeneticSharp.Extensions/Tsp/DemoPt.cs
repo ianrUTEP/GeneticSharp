@@ -11,12 +11,12 @@ namespace GeneticSharp.Extensions
         /// </summary>
         /// <param name="x">The x coordinate.</param>
         /// <param name="y">The y coordinate.</param>
-        public DemoPt(double x, double y, double interpx, double interpy)
+        public DemoPt(/*double x, double y, double fieldx, double fieldy*/)
         {
-            X = x;
-            Y = y;
-            InterpX = interpx;
-            InterpY = interpy;
+            // X = x;
+            // Y = y;
+            // FieldX = fieldx;
+            // FieldY = fieldy;
         }
         #endregion
 
@@ -37,13 +37,13 @@ namespace GeneticSharp.Extensions
         /// Gets or sets the interpolated X function value.
         /// </summary>
         /// <value>The interpolated X function value.</value>
-        public double InterpX { get; set; }
+        public double FieldX { get; set; }
 
         /// <summary>
         /// Gets or sets the interpolated Y function value.
         /// </summary>
         /// <value>The interpolated Y function value.</value>
-        public double InterpY { get; set; }
+        public double FieldY { get; set; }
         #endregion
     }
 }
