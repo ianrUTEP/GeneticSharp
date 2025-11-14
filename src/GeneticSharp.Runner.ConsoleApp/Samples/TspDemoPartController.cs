@@ -13,16 +13,12 @@ namespace GeneticSharp.Runner.ConsoleApp.Samples
         #region Fields
         private int m_numberOfCities;
         private DemoFitness m_fitness;
+        private string m_destFolder;
         #endregion
 
         #region Constructors
-        public TspDemoPart() : this(8000)
+        public TspDemoPart()
         {
-        }
-
-        public TspDemoPart(int numberOfCities)
-        {
-            m_numberOfCities = numberOfCities;
         }
         #endregion
 
@@ -40,9 +36,34 @@ namespace GeneticSharp.Runner.ConsoleApp.Samples
 
         public override IFitness CreateFitness()
         {
-            m_fitness = new DemoFitness(m_numberOfCities, 0, 1000, 0, 1000);
+            // m_fitness = new DemoFitness(m_numberOfCities, 0, 1000, 0, 1000);
 
             return m_fitness;
+        }
+        public override void Initialize()
+        {
+            base.Initialize();
+
+            Console.WriteLine("Input information file:");
+            var inputPointsFile = Console.ReadLine();
+
+            //TODO: figure out how to put the reader and csvreader in using statements
+            var reader = new StreamReader(inputPointsFile);
+            var csv = new CsvHelper.CsvReader(reader, System.Globalization.CultureInfo.InvariantCulture);
+            //Keep this though
+            var points = csv.GetRecords<DemoPt>().ToList();
+
+            m_numberOfCities = points.Count;
+
+            // var targetBitmap = Bitmap.FromFile(inputImageFile) as Bitmap;
+            m_fitness = new DemoFitness(points);
+
+            var folder = Path.Combine(Path.GetDirectoryName(inputPointsFile), "results");
+            m_destFolder = "{0}_{1:yyyyMMdd_HHmmss}".With(folder, DateTime.Now);
+            Directory.CreateDirectory(m_destFolder);
+            Console.WriteLine("Result path will be written to '{0}'.", m_destFolder);
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
         }
 
         public override IChromosome CreateChromosome()
