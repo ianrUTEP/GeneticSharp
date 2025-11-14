@@ -31,7 +31,7 @@ namespace GeneticSharp.Runner.ConsoleApp.Samples
 
         public override ITermination CreateTermination()
         {
-            return new OrTermination(new TimeEvolvingTermination(TimeSpan.FromMinutes(1)), new FitnessStagnationTermination(500));
+            return new OrTermination(new TimeEvolvingTermination(TimeSpan.FromMinutes(240)), new FitnessStagnationTermination(1000));
         }       
 
         public override IFitness CreateFitness()

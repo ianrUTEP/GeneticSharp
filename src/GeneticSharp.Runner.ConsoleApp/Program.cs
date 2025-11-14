@@ -51,6 +51,7 @@ namespace GeneticSharp.Runner.ConsoleApp
             var crossover = sampleController.CreateCrossover();
             var mutation = sampleController.CreateMutation();
             var fitness = sampleController.CreateFitness();
+            //TODO: find way to have tunable population params by user
             var population = new Population(100, 200, sampleController.CreateChromosome());
             population.GenerationStrategy = new PerformanceGenerationStrategy();
 
