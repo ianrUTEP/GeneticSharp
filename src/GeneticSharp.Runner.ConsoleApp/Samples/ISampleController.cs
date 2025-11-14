@@ -54,5 +54,11 @@
         /// </summary>
         /// <param name="bestChromosome">The current best chromosome</param>
         void Draw(IChromosome bestChromosome);
+
+        /// <summary>
+        /// Exports the sample at the end.
+        /// </summary>
+        /// <param name="bestChromosome">The current best chromosome</param>
+        void Export(IChromosome bestChromosome);
     }
 }

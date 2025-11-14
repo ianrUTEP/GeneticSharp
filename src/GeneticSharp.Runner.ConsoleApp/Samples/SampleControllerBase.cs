@@ -83,5 +83,11 @@
         {
             return new EliteSelection();
         }
+
+        /// <summary>
+        /// Exports the sample at the end.
+        /// </summary>
+        /// <param name="bestChromosome">The current best chromosome</param>
+        public abstract void Export(IChromosome bestChromosome);
     }
 }

@@ -116,5 +116,11 @@ namespace GeneticSharp.Runner.ConsoleApp.Samples
 
             return v1[t.Length];
         }
+
+        public override void Export(IChromosome bestChromosome)
+        {
+            var c = bestChromosome as GhostwriterChromosome;
+            Console.WriteLine("Text: {0}", c.BuildText());
+        }
     }
 }

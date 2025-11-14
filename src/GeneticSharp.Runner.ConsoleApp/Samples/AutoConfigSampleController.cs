@@ -60,5 +60,11 @@ namespace GeneticSharp.Runner.ConsoleApp.Samples
             var c = GA.BestChromosome as AutoConfigChromosome;
             Console.WriteLine($"Best GA configuration for TSP: {c.Crossover.GetType().Name} | {c.Mutation.GetType().Name} | {c.Selection.GetType().Name}");
         }
+
+        public override void Export(IChromosome bestChromosome)
+        {
+            var c = GA.BestChromosome as AutoConfigChromosome;
+            Console.WriteLine($"Best GA configuration for TSP: {c.Crossover.GetType().Name} | {c.Mutation.GetType().Name} | {c.Selection.GetType().Name}");
+        }
     }
 }

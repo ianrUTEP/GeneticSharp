@@ -107,6 +107,21 @@ namespace GeneticSharp.Runner.ConsoleApp
             }
         }
 
+        public override void Export(IChromosome bestChromosome)
+        {
+            if (GA.GenerationsNumber == 1 || (GA.GenerationsNumber % 200 == 0 && m_lastBest.Fitness != bestChromosome.Fitness))
+            {
+                var best = bestChromosome as BitmapChromosome;
+
+                using (var bitmap = best.BuildBitmap())
+                {
+                    bitmap.Save("{0}/{1}_{2}.png".With(m_destFolder, GA.GenerationsNumber.ToString("D10"), best.Fitness));
+                }
+
+                m_lastBest = best;
+            }
+        }
+
         #endregion
     }
 }

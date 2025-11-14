@@ -135,6 +135,23 @@ namespace GeneticSharp.Runner.ConsoleApp.Samples
         {
             return new FitnessThresholdTermination(0);
         }
+
+         /// <summary>
+        /// Draws the specified best chromosome.
+        /// </summary>
+        /// <param name="bestChromosome">The best chromosome.</param>
+        public override void Export(IChromosome bestChromosome)
+        {
+            var best = bestChromosome as FunctionBuilderChromosome;
+
+            foreach (var input in m_inputs)
+            {
+                Console.WriteLine("{0} = {1}", string.Join(", ", input.Arguments), input.ExpectedResult);
+            }
+
+            Console.WriteLine("Max operations: {0}", m_maxOperations);
+            Console.WriteLine("Function: {0}", best.BuildFunction());
+        }
         #endregion
     }
 }

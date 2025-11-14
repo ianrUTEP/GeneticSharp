@@ -71,6 +71,20 @@ namespace GeneticSharp.Runner.ConsoleApp.Samples
             var cities = bestChromosome.GetGenes().Select(g => g.Value.ToString()).ToArray();
             Console.WriteLine("City tour: {0}", string.Join(", ", cities));
         }
+
+        /// <summary>
+        /// Draws the sample.
+        /// </summary>
+        /// <param name="bestChromosome">The current best chromosome</param>
+        public override void Export(IChromosome bestChromosome)
+        {
+            var c = bestChromosome as TspChromosome;
+            Console.WriteLine("Cities: {0:n0}", c.Length);
+            Console.WriteLine("Distance: {0:n2}", c.Distance);
+
+            var cities = bestChromosome.GetGenes().Select(g => g.Value.ToString()).ToArray();
+            Console.WriteLine("City tour: {0}", string.Join(", ", cities));
+        }
         #endregion
     }
 }
