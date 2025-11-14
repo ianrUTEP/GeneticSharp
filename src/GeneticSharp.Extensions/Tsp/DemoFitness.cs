@@ -19,35 +19,36 @@ namespace GeneticSharp.Extensions
         /// <summary>
         /// Initializes a new instance of the <see cref="GeneticSharp.Extensions.TspFitness"/> class.
         /// </summary>
-        /// <param name="numberOfCities">The number of cities.</param>
+        /// <param name="numberPts">The number of cities.</param>
         /// <param name="minX">The minimum city x coordinate.</param>
         /// <param name="maxX">The maximum city x coordinate.</param>
         /// <param name="minY">The minimum city y coordinate.</param>
         /// <param name="maxY">The maximum city y coordinate..</param>
-        public DemoFitness(int numberOfCities, int minX, int maxX, int minY, int maxY)
+        public DemoFitness(List<DemoPt> pointsList/*int numberPts, int minX, int maxX, int minY, int maxY, List<double> pointXVals, List<double> pointYVals, List<double> fieldXVals, List<double> fieldYVals*/)
         {
-            points = new List<DemoPt>(numberOfCities);
-            MinX = minX;
-            MaxX = maxX;
-            MinY = minY;
-            MaxY = maxY;
+            points = pointsList;//new List<DemoPt>(numberPts);
+            // MinX = minX;
+            // MaxX = maxX;
+            // MinY = minY;
+            // MaxY = maxY;
 
-            if (maxX >= int.MaxValue)
-            {
-                throw new ArgumentOutOfRangeException(nameof(maxX));
-            }
+            // if (maxX >= int.MaxValue)
+            // {
+            //     throw new ArgumentOutOfRangeException(nameof(maxX));
+            // }
 
-            if (maxY >= int.MaxValue)
-            {
-                throw new ArgumentOutOfRangeException(nameof(maxY));
-            }
+            // if (maxY >= int.MaxValue)
+            // {
+            //     throw new ArgumentOutOfRangeException(nameof(maxY));
+            // }
 
-            for (int i = 0; i < numberOfCities; i++)
-            {
-                var city = new DemoPt(RandomizationProvider.Current.GetDouble(MinX, maxX + 1), RandomizationProvider.Current.GetDouble(MinY, maxY + 1),
-                    RandomizationProvider.Current.GetDouble(MinX, maxX + 1), RandomizationProvider.Current.GetDouble(MinY, maxY + 1));
-                points.Add(city);
-            }
+            // for (int i = 0; i < numberPts; i++)
+            // {
+            //     // var city = new DemoPt(RandomizationProvider.Current.GetDouble(MinX, maxX + 1), RandomizationProvider.Current.GetDouble(MinY, maxY + 1),
+            //         // RandomizationProvider.Current.GetDouble(MinX, maxX + 1), RandomizationProvider.Current.GetDouble(MinY, maxY + 1));
+            //     var city = new DemoPt(pointXVals[i], pointYVals[i], fieldXVals[i], fieldYVals[i]);
+            //     points.Add(city);
+            // }
         }
         
         /// <summary>
