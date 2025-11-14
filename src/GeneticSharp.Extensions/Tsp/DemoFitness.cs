@@ -96,6 +96,7 @@ namespace GeneticSharp.Extensions
                 lastCityIndex
             };
 
+            //Get cost between every internal edge
             for (int i = 0, genesLength = genes.Length; i < genesLength; i++)
             {
                 var currentCityIndex = Convert.ToInt32(genes[i].Value, CultureInfo.InvariantCulture);
@@ -105,18 +106,25 @@ namespace GeneticSharp.Extensions
                 citiesIndexes.Add(lastCityIndex);
             }
 
+            //Add cost to return to starting city
             distanceSum += CalcDistanceTwoCities(points[citiesIndexes.Last()], points[citiesIndexes.First()]);
 
             var fitness = 1.0 - (distanceSum / (points.Count * 1000.0));
+            //Fitness function is kind of arbitrary
+            //By having the incorrect factor be divided by smaller ratio it increases the resolution
+            //of the fitness and is less likely to stagnate due to floating point
+            //Too small and fitness is zero'd out, no idea how to solve
+            var fitness = 1.0 - (distanceSum / (points.Count * 100.0));
 
             ((TspChromosome)chromosome).Distance = distanceSum;
 
             // There is repeated cities on the indexes?
             var diff = points.Count - citiesIndexes.Distinct().Count();
 
+            //High damage to repeated cities
             if (diff > 0)
             {
-                fitness /= diff;
+                fitness /= diff+1;
             }
 
             if (fitness < 0)

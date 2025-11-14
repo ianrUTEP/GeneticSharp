@@ -26,6 +26,8 @@ namespace GeneticSharp.Runner.ConsoleApp.Samples
         public override void ConfigGA(GeneticAlgorithm ga)
         {
             ga.TaskExecutor = new LinearTaskExecutor();
+            ga.CrossoverProbability = 0.75f; //default
+            ga.MutationProbability = 0.1f;  //default
             base.ConfigGA(ga);
         }
 
