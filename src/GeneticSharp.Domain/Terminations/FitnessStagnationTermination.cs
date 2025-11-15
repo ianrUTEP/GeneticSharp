@@ -67,6 +67,16 @@ namespace GeneticSharp
 
             return m_stagnantGenerationsCount >= ExpectedStagnantGenerationsNumber;
         }
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents the current <see cref="GeneticSharp.LogicalOperatorTerminationBase"/>.
+        /// </summary>
+        /// <returns>A <see cref="System.String"/> that represents the current <see cref="GeneticSharp.LogicalOperatorTerminationBase"/>.</returns>
+        public override string ToString()
+        {
+            
+            return "{0} (MaxStagnantGenerations: {1})".With(base.ToString(), ExpectedStagnantGenerationsNumber);
+        }
         #endregion
     }
 }

@@ -56,6 +56,7 @@
         void Draw(IChromosome bestChromosome);
 
         /// <summary>
+        /// Exports the sample at the end and extra data
         /// </summary>
         void Export();
     }

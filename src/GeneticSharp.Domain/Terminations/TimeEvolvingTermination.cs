@@ -52,5 +52,15 @@ namespace GeneticSharp
             return geneticAlgorithm.TimeEvolving >= MaxTime;
         }
         #endregion
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents the current <see cref="GeneticSharp.LogicalOperatorTerminationBase"/>.
+        /// </summary>
+        /// <returns>A <see cref="System.String"/> that represents the current <see cref="GeneticSharp.LogicalOperatorTerminationBase"/>.</returns>
+        public override string ToString()
+        {
+            
+            return "{0} (MaxTime: {1})".With(base.ToString(), MaxTime);
+        }
     }
 }

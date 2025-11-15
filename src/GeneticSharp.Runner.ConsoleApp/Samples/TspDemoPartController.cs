@@ -99,7 +99,7 @@ namespace GeneticSharp.Runner.ConsoleApp.Samples
         }
 
         /// <summary>
-        /// Exports the sample at the end.
+        /// Exports the sample at the end and extra data
         /// </summary>
         public override void Export()
         {
@@ -109,6 +109,17 @@ namespace GeneticSharp.Runner.ConsoleApp.Samples
                 var solution = GA.BestChromosome.GetGenes().Select(g => g.Value).ToList(); //ToString().ToArray() was default, trying .ToList() and also not convert to string;
                 csv.WriteRecords(solution);
             }
+            StringBuilder sb = new StringBuilder();
+            Object[] dataFields = {GA.Population.GenerationsNumber.ToString(), GA.Termination.ToString()};
+            String[] dataNames = {"Number of populations: ", "Termination conditions: "};
+            for (int ctr = 0; ctr <= dataNames.GetUpperBound(0); ctr++)
+            {
+                sb.Append(dataNames[ctr]);
+                sb.Append(dataFields[ctr]);
+                sb.AppendLine();
+            }
+            using StreamWriter outputData = new(Path.Combine(m_destFolder, "runParams.txt"));
+            outputData.Write(sb.ToString());
         }
         #endregion
     }
