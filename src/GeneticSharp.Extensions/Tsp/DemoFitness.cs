@@ -115,10 +115,11 @@ namespace GeneticSharp.Extensions
             //Too small and fitness is zero'd out, no idea how to solve
             var fitness = 1.0 - (distanceSum / (points.Count * 100.0));
 
-            ((TspChromosome)chromosome).Distance = distanceSum;
+            ((DemoPtChromosome)chromosome).Distance = distanceSum;
+            ((DemoPtChromosome)chromosome).Unique = citiesIndexes.Distinct().Count();
 
             // There is repeated cities on the indexes?
-            var diff = points.Count - citiesIndexes.Distinct().Count();
+            var diff = points.Count - ((DemoPtChromosome)chromosome).Unique;
 
             //High damage to repeated cities
             if (diff > 0)

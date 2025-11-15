@@ -70,7 +70,7 @@ namespace GeneticSharp.Runner.ConsoleApp.Samples
 
         public override IChromosome CreateChromosome()
         {
-            return new TspChromosome(m_numberOfCities);
+            return new DemoPtChromosome(m_numberOfCities);
         }
 
         public override ICrossover CreateCrossover()
@@ -89,8 +89,9 @@ namespace GeneticSharp.Runner.ConsoleApp.Samples
         /// <param name="bestChromosome">The current best chromosome</param>
         public override void Draw(IChromosome bestChromosome)
         {
-            var c = bestChromosome as TspChromosome;
-            Console.WriteLine("Cities: {0:n0}", c.Length);
+            var c = bestChromosome as DemoPtChromosome;
+            Console.WriteLine("Total points: {0:n0}", c.Length);
+            Console.WriteLine("Unique points on path: {0:n0}", c.Unique);
             Console.WriteLine("Distance: {0:n2}", c.Distance);
 
             // var cities = bestChromosome.GetGenes().Select(g => g.Value.ToString()).ToArray();
