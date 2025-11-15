@@ -139,10 +139,9 @@ namespace GeneticSharp.Runner.ConsoleApp.Samples
          /// <summary>
         /// Draws the specified best chromosome.
         /// </summary>
-        /// <param name="bestChromosome">The best chromosome.</param>
-        public override void Export(IChromosome bestChromosome)
+        public override void Export()
         {
-            var best = bestChromosome as FunctionBuilderChromosome;
+            var best = GA.BestChromosome as FunctionBuilderChromosome;
 
             foreach (var input in m_inputs)
             {

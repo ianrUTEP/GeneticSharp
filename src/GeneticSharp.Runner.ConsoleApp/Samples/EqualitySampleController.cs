@@ -58,9 +58,9 @@ namespace GeneticSharp.Runner.ConsoleApp.Samples
             return new FitnessThresholdTermination(0);
         }
 
-        public override void Export(IChromosome bestChromosome)
+        public override void Export()
         {
-            var best = bestChromosome as EquationChromosome;
+            var best = GA.BestChromosome as EquationChromosome;
 
             var genes = best.GetGenes();
             Console.WriteLine("Equation: {0} + 2*{1} + 3*{2} + 4*{3} = {4}", genes[0], genes[1], genes[2], genes[3], EqualityFitness.GetEquationResult(best));

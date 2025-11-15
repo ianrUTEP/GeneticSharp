@@ -87,7 +87,7 @@ namespace GeneticSharp.Runner.ConsoleApp
                 Console.ReadKey();
                 return;
             }
-            sampleController.Export(ga.Population.BestChromosome);
+            sampleController.Export();
             Console.ForegroundColor = ConsoleColor.DarkGreen;
             Console.WriteLine();
             Console.WriteLine("Evolved.");

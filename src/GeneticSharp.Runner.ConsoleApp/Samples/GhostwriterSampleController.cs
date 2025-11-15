@@ -117,9 +117,9 @@ namespace GeneticSharp.Runner.ConsoleApp.Samples
             return v1[t.Length];
         }
 
-        public override void Export(IChromosome bestChromosome)
+        public override void Export()
         {
-            var c = bestChromosome as GhostwriterChromosome;
+            var c = GA.BestChromosome as GhostwriterChromosome;
             Console.WriteLine("Text: {0}", c.BuildText());
         }
     }

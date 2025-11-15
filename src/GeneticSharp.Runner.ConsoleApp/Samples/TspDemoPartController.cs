@@ -101,13 +101,12 @@ namespace GeneticSharp.Runner.ConsoleApp.Samples
         /// <summary>
         /// Exports the sample at the end.
         /// </summary>
-        /// <param name="bestChromosome">The current best chromosome</param>
-        public override void Export(IChromosome bestChromosome)
+        public override void Export()
         {
             using (var writer = new StreamWriter(m_destFolder + "/solution.csv"))
             using (var csv = new CsvHelper.CsvWriter(writer, System.Globalization.CultureInfo.InvariantCulture))
             {
-                var solution = bestChromosome.GetGenes().Select(g => g.Value).ToList(); //.ToArray() was default, trying .ToList() and also not convert to string;
+                var solution = GA.BestChromosome.GetGenes().Select(g => g.Value).ToList(); //ToString().ToArray() was default, trying .ToList() and also not convert to string;
                 csv.WriteRecords(solution);
             }
         }

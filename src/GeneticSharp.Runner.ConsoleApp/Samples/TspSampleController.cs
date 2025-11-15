@@ -75,14 +75,13 @@ namespace GeneticSharp.Runner.ConsoleApp.Samples
         /// <summary>
         /// Draws the sample.
         /// </summary>
-        /// <param name="bestChromosome">The current best chromosome</param>
-        public override void Export(IChromosome bestChromosome)
+        public override void Export()
         {
-            var c = bestChromosome as TspChromosome;
+            var c = GA.BestChromosome as TspChromosome;
             Console.WriteLine("Cities: {0:n0}", c.Length);
             Console.WriteLine("Distance: {0:n2}", c.Distance);
 
-            var cities = bestChromosome.GetGenes().Select(g => g.Value.ToString()).ToArray();
+            var cities = GA.BestChromosome.GetGenes().Select(g => g.Value.ToString()).ToArray();
             Console.WriteLine("City tour: {0}", string.Join(", ", cities));
         }
         #endregion

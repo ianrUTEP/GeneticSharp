@@ -107,11 +107,11 @@ namespace GeneticSharp.Runner.ConsoleApp
             }
         }
 
-        public override void Export(IChromosome bestChromosome)
+        public override void Export()
         {
-            if (GA.GenerationsNumber == 1 || (GA.GenerationsNumber % 200 == 0 && m_lastBest.Fitness != bestChromosome.Fitness))
+            if (GA.GenerationsNumber == 1 || (GA.GenerationsNumber % 200 == 0 && m_lastBest.Fitness != GA.BestChromosome.Fitness))
             {
-                var best = bestChromosome as BitmapChromosome;
+                var best = GA.BestChromosome as BitmapChromosome;
 
                 using (var bitmap = best.BuildBitmap())
                 {

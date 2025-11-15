@@ -85,9 +85,8 @@
         }
 
         /// <summary>
-        /// Exports the sample at the end.
+        /// Exports the sample at the end and extra data
         /// </summary>
-        /// <param name="bestChromosome">The current best chromosome</param>
-        public abstract void Export(IChromosome bestChromosome);
+        public abstract void Export();
     }
 }
