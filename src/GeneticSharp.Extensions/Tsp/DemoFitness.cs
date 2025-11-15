@@ -113,7 +113,7 @@ namespace GeneticSharp.Extensions
             //By having the incorrect factor be divided by smaller ratio it increases the resolution
             //of the fitness and is less likely to stagnate due to floating point
             //Too small and fitness is zero'd out, no idea how to solve
-            var fitness = 1.0 - (distanceSum / (points.Count * 100.0));
+            var fitness = 1.0 - (distanceSum / (points.Count * 2.4));
 
             ((DemoPtChromosome)chromosome).Distance = distanceSum;
             ((DemoPtChromosome)chromosome).Unique = citiesIndexes.Distinct().Count();
