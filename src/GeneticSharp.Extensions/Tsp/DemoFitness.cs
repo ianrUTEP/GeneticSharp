@@ -16,71 +16,33 @@ namespace GeneticSharp.Extensions
     /// </summary>
     public class DemoFitness : IFitness
     {
+        #region Fields
+        private readonly Func<DemoPt, DemoPt, double> m_weightFunction;
+        private readonly Func<double, int, double> m_fitFunc;
+        #endregion
+        
+        #region Constructors
         /// <summary>
         /// Initializes a new instance of the <see cref="GeneticSharp.Extensions.TspFitness"/> class.
         /// </summary>
         /// <param name="numberPts">The number of cities.</param>
-        /// <param name="minX">The minimum city x coordinate.</param>
-        /// <param name="maxX">The maximum city x coordinate.</param>
-        /// <param name="minY">The minimum city y coordinate.</param>
-        /// <param name="maxY">The maximum city y coordinate..</param>
-        public DemoFitness(List<DemoPt> pointsList/*int numberPts, int minX, int maxX, int minY, int maxY, List<double> pointXVals, List<double> pointYVals, List<double> fieldXVals, List<double> fieldYVals*/)
+        public DemoFitness(List<DemoPt> pointsList, Func<double, int, double> fitnessEquation, Func<DemoPt,DemoPt,double> weightEquation)
         {
-            points = pointsList;//new List<DemoPt>(numberPts);
-            // MinX = minX;
-            // MaxX = maxX;
-            // MinY = minY;
-            // MaxY = maxY;
-
-            // if (maxX >= int.MaxValue)
-            // {
-            //     throw new ArgumentOutOfRangeException(nameof(maxX));
-            // }
-
-            // if (maxY >= int.MaxValue)
-            // {
-            //     throw new ArgumentOutOfRangeException(nameof(maxY));
-            // }
-
-            // for (int i = 0; i < numberPts; i++)
-            // {
-            //     // var city = new DemoPt(RandomizationProvider.Current.GetDouble(MinX, maxX + 1), RandomizationProvider.Current.GetDouble(MinY, maxY + 1),
-            //         // RandomizationProvider.Current.GetDouble(MinX, maxX + 1), RandomizationProvider.Current.GetDouble(MinY, maxY + 1));
-            //     var city = new DemoPt(pointXVals[i], pointYVals[i], fieldXVals[i], fieldYVals[i]);
-            //     points.Add(city);
-            // }
+            Points = pointsList;
+            m_fitFunc = fitnessEquation;
+            m_weightFunction = weightEquation;
         }
+        #endregion
         
+        #region Properties
         /// <summary>
-        /// Gets the cities.
+        /// Gets the points.
         /// </summary>
-        /// <value>The cities.</value>
-        public IList<DemoPt> points { get; private set; }
-
-        /// <summary>
-        /// Gets the minimum x.
-        /// </summary>
-        /// <value>The minimum x.</value>
-        public int MinX { get; private set; }
-
-        /// <summary>
-        /// Gets the max x.
-        /// </summary>
-        /// <value>The max x.</value>
-        public int MaxX { get; private set; }
-
-        /// <summary>
-        /// Gets the minimum y.
-        /// </summary>
-        /// <value>The minimum y.</value>
-        public int MinY { get; private set; }
-
-        /// <summary>
-        /// Gets the max y.
-        /// </summary>
-        /// <value>The max y.</value>
-        public int MaxY { get; private set; }        
+        /// <value>The points.</value>
+        public IList<DemoPt> Points { get; private set; }      
+        #endregion
         
+        #region Methods
         /// <summary>
         /// Performs the evaluation against the specified chromosome.
         /// </summary>
@@ -100,26 +62,22 @@ namespace GeneticSharp.Extensions
             for (int i = 0, genesLength = genes.Length; i < genesLength; i++)
             {
                 var currentCityIndex = Convert.ToInt32(genes[i].Value, CultureInfo.InvariantCulture);
-                distanceSum += CalcDistanceTwoCities(points[currentCityIndex], points[lastCityIndex]);
+                distanceSum += CalcDistanceTwoCities(Points[currentCityIndex], Points[lastCityIndex]);
                 lastCityIndex = currentCityIndex;
 
                 citiesIndexes.Add(lastCityIndex);
             }
 
             //Add cost to return to starting city
-            distanceSum += CalcDistanceTwoCities(points[citiesIndexes.Last()], points[citiesIndexes.First()]);
+            distanceSum += CalcDistanceTwoCities(Points[citiesIndexes.Last()], Points[citiesIndexes.First()]);
 
-            //Fitness function is kind of arbitrary
-            //By having the incorrect factor be divided by smaller ratio it increases the resolution
-            //of the fitness and is less likely to stagnate due to floating point
-            //Too small and fitness is zero'd out, no idea how to solve
-            var fitness = 1.0 - (distanceSum / (points.Count * 2.4));
+            var fitness = m_fitFunc(distanceSum, Points.Count);
 
             ((DemoPtChromosome)chromosome).Distance = distanceSum;
             ((DemoPtChromosome)chromosome).Unique = citiesIndexes.Distinct().Count();
 
             // There is repeated cities on the indexes?
-            var diff = points.Count - ((DemoPtChromosome)chromosome).Unique;
+            var diff = Points.Count - ((DemoPtChromosome)chromosome).Unique;
 
             //High damage to repeated cities
             if (diff > 0)
@@ -141,9 +99,10 @@ namespace GeneticSharp.Extensions
         /// <returns>The distance two cities.</returns>
         /// <param name="one">City one.</param>
         /// <param name="two">City two.</param>
-        private static double CalcDistanceTwoCities(DemoPt one, DemoPt two)
+        private double CalcDistanceTwoCities(DemoPt one, DemoPt two)
         {
-            return Math.Sqrt(Math.Pow(two.X - one.X, 2) + Math.Pow(two.Y - one.Y, 2));
-        }        
+            return m_weightFunction(one,two);
+        }
+        #endregion
     }
 }

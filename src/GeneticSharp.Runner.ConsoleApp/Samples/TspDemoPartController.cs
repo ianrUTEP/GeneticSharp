@@ -1,9 +1,11 @@
 using GeneticSharp.Extensions;  //Install with Install-Package GeneticSharp.Extensions
 using System;
-using System.ComponentModel;
-using System.Linq;
-using System.IO;
-//Install with Install-Package CSVHelper
+using System.ComponentModel; 
+using System.Linq;      //Lambda expressions
+using System.IO;        //File r/w
+using System.Text;      //Building parameter output
+using System.Collections.Generic;   //List of points
+//Install CSVHelper package through Install-Package or other package methods
 
 namespace GeneticSharp.Runner.ConsoleApp.Samples
 {
@@ -14,11 +16,23 @@ namespace GeneticSharp.Runner.ConsoleApp.Samples
         private int m_numberOfCities;
         private DemoFitness m_fitness;
         private string m_destFolder;
+        private System.Linq.Expressions.Expression<Func<double, int, double>> m_fitnessEquation;
+        private System.Linq.Expressions.Expression<Func<DemoPt, DemoPt, double>> m_weightEquation;
         #endregion
 
         #region Constructors
         public TspDemoPart()
         {
+            // Fitness function is kind of arbitrary
+            // By having the incorrect factor be divided by smaller ratio it increases the resolution
+            // of the fitness and is less likely to stagnate due to floating point
+            // Too small and fitness is zero'd out, no idea how to solve
+            m_fitnessEquation = (double totalDist, int pointCount) //Given the total distance of a solution and the point count, how fit is it?
+                => 1.0 - (totalDist / (pointCount * 2.4));
+            // Weight equation:
+            // This runs for every edge considered and is given the two points to consider. DemoPt objects contain their X, Y, FieldX, and FieldY components
+            m_weightEquation = (DemoPt one, DemoPt two) 
+                => Math.Sqrt(Math.Pow(two.X - one.X, 2) + Math.Pow(two.Y - one.Y, 2));
         }
         #endregion
 
@@ -57,8 +71,8 @@ namespace GeneticSharp.Runner.ConsoleApp.Samples
 
             m_numberOfCities = points.Count;
 
-            // var targetBitmap = Bitmap.FromFile(inputImageFile) as Bitmap;
-            m_fitness = new DemoFitness(points);
+            //Create the fitness object for evaluation of solutions
+            m_fitness = new DemoFitness(points, m_fitnessEquation.Compile(), m_weightEquation.Compile());
 
             var folder = Path.Combine(Path.GetDirectoryName(inputPointsFile), "results");
             m_destFolder = "{0}_{1:yyyyMMdd_HHmmss}".With(folder, DateTime.Now);
