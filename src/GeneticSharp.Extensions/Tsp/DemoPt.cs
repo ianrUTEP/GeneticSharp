@@ -1,22 +1,16 @@
 namespace GeneticSharp.Extensions
 {
     /// <summary>
-    /// Travelling Salesman city.
+    /// Point in a DemoPart.
     /// </summary>
     public class DemoPt
     {
         #region Constructors
         /// <summary>
-        /// Initializes a new instance of the <see cref="GeneticSharp.Extensions.TspCity"/> class.
+        /// Initializes a new instance of the <see cref="GeneticSharp.Extensions.DemoPt"/> class.
         /// </summary>
-        /// <param name="x">The x coordinate.</param>
-        /// <param name="y">The y coordinate.</param>
-        public DemoPt(/*double x, double y, double fieldx, double fieldy*/)
+        public DemoPt()
         {
-            // X = x;
-            // Y = y;
-            // FieldX = fieldx;
-            // FieldY = fieldy;
         }
         #endregion
 

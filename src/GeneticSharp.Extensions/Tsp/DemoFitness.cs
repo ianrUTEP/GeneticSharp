@@ -68,9 +68,6 @@ namespace GeneticSharp.Extensions
                 citiesIndexes.Add(lastCityIndex);
             }
 
-            //Add cost to return to starting city
-            distanceSum += CalcDistanceTwoCities(Points[citiesIndexes.Last()], Points[citiesIndexes.First()]);
-
             var fitness = m_fitFunc(distanceSum, Points.Count);
 
             ((DemoPtChromosome)chromosome).Distance = distanceSum;

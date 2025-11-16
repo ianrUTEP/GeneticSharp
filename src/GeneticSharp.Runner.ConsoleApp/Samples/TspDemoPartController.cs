@@ -59,8 +59,6 @@ namespace GeneticSharp.Runner.ConsoleApp.Samples
 
         public override IFitness CreateFitness()
         {
-            // m_fitness = new DemoFitness(m_numberOfCities, 0, 1000, 0, 1000);
-
             return m_fitness;
         }
         public override void Initialize()
@@ -118,9 +116,6 @@ namespace GeneticSharp.Runner.ConsoleApp.Samples
             Console.WriteLine("Total points: {0:n0}", c.Length);
             Console.WriteLine("Unique points on path: {0:n0}", c.Unique);
             Console.WriteLine("Distance: {0:n2}", c.Distance);
-
-            // var cities = bestChromosome.GetGenes().Select(g => g.Value.ToString()).ToArray();
-            // Console.WriteLine("City tour: {0}");///, string.Join(", ", cities));
         }
 
         /// <summary>

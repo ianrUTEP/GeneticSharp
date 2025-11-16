@@ -5,7 +5,7 @@ namespace GeneticSharp.Extensions
     /// <summary>
     /// Travelling Salesman Problem chromosome.
     /// <remarks>
-    /// Each gene represents a city index.
+    /// Each gene represents a point index.
     /// </remarks>
     /// </summary>
     [Serializable]
@@ -19,34 +19,14 @@ namespace GeneticSharp.Extensions
         /// <summary>
         /// Initializes a new instance of the <see cref="GeneticSharp.Extensions.DemoPtChromosome"/> class.
         /// </summary>
-        /// <param name="numberOfCities">Number of cities.</param>
-        // public DemoPtChromosome(int numberOfCities) : base(numberOfCities)
-        // {
-        //     m_numberOfCities = numberOfCities;
-        //     var citiesIndexes = RandomizationProvider.Current.GetUniqueInts(numberOfCities, 0, numberOfCities);
-
-        //     for (int i = 0; i < numberOfCities; i++)
-        //     {
-        //         ReplaceGene(i, new Gene(citiesIndexes[i]));
-        //     }
-        // }
-        public DemoPtChromosome(int numberOfCities) : base(numberOfCities)
+        /// <param name="numberOfPoints">Number of cities.</param>
+        public DemoPtChromosome(int numberOfPoints) : base(numberOfPoints)
         {
-            m_numberOfCities = numberOfCities;
-            // var citiesIndexes = RandomizationProvider.Current.GetUniqueInts(numberOfCities, 0, numberOfCities);
-
-            //Basic first case: just go in numeric order
-            for (int i = 0; i < numberOfCities; i++)
+            m_numberOfCities = numberOfPoints;
+            for (int i = 0; i < numberOfPoints; i++)
             {
                 ReplaceGene(i, new Gene(i));
             }
-            // m_numberOfCities = numberOfCities;
-            // var citiesIndexes = RandomizationProvider.Current.GetUniqueInts(numberOfCities, 0, numberOfCities);
-
-            // for (int i = 0; i < numberOfCities; i++)
-            // {
-            //     ReplaceGene(i, new Gene(citiesIndexes[i]));
-            // }
         }
         #endregion
 
