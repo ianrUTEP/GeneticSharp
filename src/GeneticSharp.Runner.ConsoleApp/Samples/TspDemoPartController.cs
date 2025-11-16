@@ -15,7 +15,10 @@ namespace GeneticSharp.Runner.ConsoleApp.Samples
         #region Fields
         private int m_numberOfCities;
         private DemoFitness m_fitness;
+        private string m_sourceFile;
         private string m_destFolder;
+        private float m_crossProb;
+        private float m_mutateProb;
         private System.Linq.Expressions.Expression<Func<double, int, double>> m_fitnessEquation;
         private System.Linq.Expressions.Expression<Func<DemoPt, DemoPt, double>> m_weightEquation;
         #endregion
@@ -23,6 +26,10 @@ namespace GeneticSharp.Runner.ConsoleApp.Samples
         #region Constructors
         public TspDemoPart()
         {
+            // Configurable values for the system - only population size is not controllable through this file
+            m_crossProb = 0.20f;    //default 0.75 - minimal impact but slows down generation time as increases
+            m_mutateProb = 0.90f;   //default 0.1 - increasing has large impact for our purposes with little decrease in generation time
+
             // Fitness function is kind of arbitrary
             // By having the incorrect factor be divided by smaller ratio it increases the resolution
             // of the fitness and is less likely to stagnate due to floating point
@@ -39,9 +46,9 @@ namespace GeneticSharp.Runner.ConsoleApp.Samples
         #region Methods
         public override void ConfigGA(GeneticAlgorithm ga)
         {
-            ga.TaskExecutor = new LinearTaskExecutor();
-            ga.CrossoverProbability = 0.75f; //default
-            ga.MutationProbability = 0.1f;  //default
+            ga.TaskExecutor = new ParallelTaskExecutor();//LinearTaskExecutor();
+            ga.CrossoverProbability = m_crossProb; 
+            ga.MutationProbability = m_mutateProb;  
             base.ConfigGA(ga);
         }
 
@@ -60,20 +67,24 @@ namespace GeneticSharp.Runner.ConsoleApp.Samples
         {
             base.Initialize();
 
+            ///The user will input the file at runtime
             Console.WriteLine("Input information file:");
             var inputPointsFile = Console.ReadLine();
+            m_sourceFile = inputPointsFile;
 
-            //TODO: figure out how to put the reader and csvreader in using statements
-            var reader = new StreamReader(inputPointsFile);
-            var csv = new CsvHelper.CsvReader(reader, System.Globalization.CultureInfo.InvariantCulture);
-            //Keep this though
-            var points = csv.GetRecords<DemoPt>().ToList();
-
+            //Read the points from a CSV file
+            List<DemoPt> points;
+            using (var reader = new StreamReader(inputPointsFile))
+            using (var csv = new CsvHelper.CsvReader(reader, System.Globalization.CultureInfo.InvariantCulture))
+            {
+                points = csv.GetRecords<DemoPt>().ToList();
+            }
             m_numberOfCities = points.Count;
 
             //Create the fitness object for evaluation of solutions
             m_fitness = new DemoFitness(points, m_fitnessEquation.Compile(), m_weightEquation.Compile());
 
+            //Where information will be stored at the end
             var folder = Path.Combine(Path.GetDirectoryName(inputPointsFile), "results");
             m_destFolder = "{0}_{1:yyyyMMdd_HHmmss}".With(folder, DateTime.Now);
             Directory.CreateDirectory(m_destFolder);
@@ -124,8 +135,41 @@ namespace GeneticSharp.Runner.ConsoleApp.Samples
                 csv.WriteRecords(solution);
             }
             StringBuilder sb = new StringBuilder();
-            Object[] dataFields = {GA.Population.GenerationsNumber.ToString(), GA.Termination.ToString()};
-            String[] dataNames = {"Number of populations: ", "Termination conditions: "};
+            var chrome = GA.BestChromosome as DemoPtChromosome;
+            object[] dataFields = { 
+                                    m_sourceFile.ToString(),
+                                    GA.Termination.ToString(), 
+                                    GA.Population.GenerationsNumber.ToString(), 
+                                    GA.Population.MinSize.ToString(), 
+                                    GA.Population.MaxSize.ToString(), 
+                                    CreateCrossover().ToString(),
+                                    m_crossProb.ToString(), 
+                                    CreateMutation().ToString(),
+                                    m_mutateProb.ToString(),
+                                    m_fitnessEquation.ToString(),
+                                    m_weightEquation.ToString(),
+                                    (GA.Population.GenerationsNumber / GA.TimeEvolving.TotalSeconds).ToString(),
+                                    chrome.Unique.ToString(),
+                                    chrome.Fitness.ToString(),
+                                    chrome.Distance.ToString(),
+                                    };
+            string[] dataNames = {  
+                                    "Source points file: ",
+                                    "Termination conditions: ", 
+                                    "Number of generations: ", 
+                                    "Minimum population size: ", 
+                                    "Maximum population size: ", 
+                                    "Crossover type: ",
+                                    "Crossover propability: ", 
+                                    "Mutation type: ",
+                                    "Mutation probability: ",
+                                    "Fitness equation: ",
+                                    "Weight equation: ",
+                                    "Average speed gen/sec: ",
+                                    "Best chromosome unique: ",
+                                    "Best chromosome fitness: ",
+                                    "Best chromosome distance: "
+                                    };
             for (int ctr = 0; ctr <= dataNames.GetUpperBound(0); ctr++)
             {
                 sb.Append(dataNames[ctr]);
