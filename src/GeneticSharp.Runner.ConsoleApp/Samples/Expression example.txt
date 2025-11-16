@@ -1,0 +1,9 @@
+System.Linq.Expressions.Expression<Func<int, int>> e = x => x * x;
+Console.WriteLine(e);
+Console.WriteLine(((Func<int,int>) e.Compile())(5));
+// Output:
+// x => (x * x)
+
+System.Linq.Expressions.Expression<Func<int, int, int, int, double>> weightFunction = (int x1, int y1, int x2, int y2) => Math.Sqrt(Math.Pow(x2 - x1,2) + Math.Pow(y2-y1,2));
+Console.WriteLine(weightFunction);
+Console.WriteLine(((Func<int, int, int, int, double>) weightFunction.Compile())(1,2,3,4));
